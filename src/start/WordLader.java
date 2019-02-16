@@ -3,6 +3,7 @@ package start;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -74,6 +75,7 @@ public class WordLader {
 	private void findWordLader(){
 		//create an empty Queue of stacks
 		queueOfstacks = new LinkedList<Stack<String>>();
+		visitedNeighbours = new HashSet<String>();
 		//Create/add a stack containing {w1} to the queue.
 		Stack<String> word1Stack = new Stack<>();
 		word1Stack.add(word1);
@@ -82,23 +84,52 @@ public class WordLader {
 			//Dequeue the partial-ladder stack from the front of the queue.
 			Stack<String> wordStack = queueOfstacks.remove();
 			// now get top word from the stack
-			String topWord = wordStack.pop();
-			findNeighbours(topWord);
+			String topWord  = wordStack.peek();
+			boolean isPathFound = findPossiblePath(topWord, wordStack);
+			if(isPathFound){
+				while(!wordStack.isEmpty()){
+					System.out.print(wordStack.pop() + " ");
+				}
+				System.out.println("\nHave a good day");
+				break;
+			}
 		}
 	}
 	
-	private void findNeighbours(String topWord){
+	private boolean findPossiblePath(String topWord, Stack<String> wordStack){
 		String word = topWord;
+		visitedNeighbours.add(topWord);
+		//For each valid English word that is a "neighbor" (differs by 1 letter) of the word on top of the stack:
 		for(int i=0; i<word.length(); i++){
 			for(char alphabet = 'a'; alphabet<='z'; alphabet++){
 				String newBuiltNeighbour = getPossibleNeighbour(i, alphabet, word);
 				if(dictionary.contains(newBuiltNeighbour)){
 					// ok its valid word
+					// is it visited before?
+					if(!visitedNeighbours.contains(newBuiltNeighbour)){
+						// No its not visited before
+						// is it word 2?
+						if(word2.equals(newBuiltNeighbour)){
+							// ok we have come to our goal word
+							wordStack.add(newBuiltNeighbour);
+							return true;
+						}else{
+							//Create a copy of the current partial-ladder stack.
+							Stack<String> newStack = new Stack<>();
+							newStack.addAll(wordStack);
+							
+							//Put the neighbor word on top of the copy stack.
+							newStack.push(newBuiltNeighbour);
+							//Add the copy stack to the end of the queue.
+							queueOfstacks.add(newStack);
+						}
+						// make it visited
+						visitedNeighbours.add(newBuiltNeighbour);
+					}
 				}
-				
 			}
-			System.out.println();
 		}
+		return false;
 	}
 	
 	private String getPossibleNeighbour(int index, char alpha, String original){
