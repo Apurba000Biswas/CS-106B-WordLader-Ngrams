@@ -3,7 +3,6 @@ package start;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
