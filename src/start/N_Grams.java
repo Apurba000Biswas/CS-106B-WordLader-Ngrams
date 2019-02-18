@@ -34,8 +34,7 @@ public class N_Grams {
 		Scanner userInputScanner = new Scanner(System.in);
 		N = userInputScanner.nextInt();
 		biuldN_Map();
-		System.out.println("Map is\n");
-		printN_map();
+		//printN_map();
 		System.out.print("# of random words to generate (0 to quit)? : ");
 		int numOfWord = userInputScanner.nextInt();
 		if(numOfWord != 0){
@@ -58,7 +57,6 @@ public class N_Grams {
 			textLength = buildText(sbText, nextWord, textLength);
 			shiftByOneWindow(window ,nextWord);
 			key = getKey(window);
-			System.out.println("Window when text Length : " + textLength + window);
 		}
 		sbText.append("...");
 		System.out.println(sbText);
