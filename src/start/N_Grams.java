@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Scanner;
 
 public class N_Grams {
@@ -45,8 +46,55 @@ public class N_Grams {
 	}
 	
 	private void generateText(int numOfWord){
-		System.out.println("Generating Text .. ");
+		int textLength = 0;
+		List<String> key = getRandomKey(); // first Key
+		Queue<String> window = buildWindow(key); // first window
+		StringBuilder sbText = new StringBuilder("...") ; // first text
+		for(String word: key){
+			textLength = buildText(sbText, word, textLength);
+		}
+		while(textLength < numOfWord){
+			String nextWord = getPossibleWord(key);
+			textLength = buildText(sbText, nextWord, textLength);
+			shiftByOneWindow(window ,nextWord);
+			key = getKey(window);
+			System.out.println("Window when text Length : " + textLength + window);
+		}
+		sbText.append("...");
+		System.out.println(sbText);
 	}
+	
+	private int buildText(StringBuilder sbText , String word, int textLength){
+		sbText.append(" ");
+		sbText.append(word);
+		sbText.append(" ");
+		textLength ++;
+		return textLength;
+	}
+	
+	private Queue<String> buildWindow(List<String> key){
+		Queue<String> window = new LinkedList<String>();
+		for(String word: key){
+			window.add(word);
+		}
+		return window;
+	}
+	
+	private String getPossibleWord(List<String> key){
+		Random rand = new Random();
+		List<String> valueList = N_Map.get(key);
+		int randomIndex = rand.nextInt(valueList.size());
+		String possibleWord = valueList.get(randomIndex);
+		return possibleWord;
+	}
+	private List<String> getRandomKey(){
+		Object[] nMapKeys = N_Map.keySet().toArray();
+		@SuppressWarnings("unchecked")
+		List<String> key = (List<String>)nMapKeys[new Random().nextInt(nMapKeys.length)];
+		return key;
+	}
+	
+	
 	
 	private void biuldN_Map(){
 		Path path = Paths.get(FILE_NAME);
@@ -64,10 +112,7 @@ public class N_Grams {
 				}
 				if(windowSize == (N-1)){
 					List<String> key = getKey(window);
-					System.out.print(key + " Follwed word is: ");
 					String followedWord = sc.next();
-					System.out.println(followedWord);
-					
 					putInN_Map(key, followedWord);
 					shiftByOneWindow(window, followedWord);
 				}
@@ -84,7 +129,6 @@ public class N_Grams {
 			String topFollowedWord = firstKey.get(i);
 			List<String> lastKey = getKey(lastWindow);
 			putInN_Map(lastKey, topFollowedWord);
-			System.out.print("Top Word (" + i + ") : " + topFollowedWord + " ");
 			shiftByOneWindow(lastWindow, topFollowedWord);
 		}
 	}
