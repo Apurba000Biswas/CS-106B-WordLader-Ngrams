@@ -1,7 +1,7 @@
 # CS-106B-WordLader-Ngrams
 
 This project is one of the Assignment of CS 106B from stanford University
-Although the course was taught in C++. The main goal for the project was
+Although the course was taught in C++.Main goal for the project was
 to learn about Data Structures.
 
 Course material from CS 106B Website
