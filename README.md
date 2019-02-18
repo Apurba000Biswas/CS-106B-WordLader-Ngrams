@@ -10,6 +10,8 @@ Course material from CS 106B Website
 1. Set
 2. Queue
 3. Stack
+4. Map
+5. List
 
 #### Note
 If you are Stanford CS 106B Student Please dont see the source code.

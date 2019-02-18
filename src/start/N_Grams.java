@@ -44,38 +44,55 @@ public class N_Grams {
 		Queue<String> window = new LinkedList<String>();
 		try{
 			Scanner sc = new Scanner(path);
+			List<String> firstKey = new ArrayList<String>();
 			while(sc.hasNext()){
 				int windowSize = window.size();
 				if(windowSize<(N-1)){
 					String word = sc.next();
 					window.add(word);
+					firstKey.add(word);
 				}
 				if(windowSize == (N-1)){
-					// ok we have our key
 					List<String> key = getKey(window);
-					//System.out.print(key + " Follwed word is: ");
-					String folledWord = "";
-					if(sc.hasNext()){
-						folledWord = sc.next();
-						//System.out.println(folledWord);
-					}
-					if(N_Map.containsKey(key)){
-						List<String> value = N_Map.get(key);
-						value.add(folledWord);
-						N_Map.put(key, value);
-					}else{
-						List<String> newValue = new ArrayList<>();
-						newValue.add(folledWord);
-						N_Map.put(key, newValue);
-					}
+					System.out.print(key + " Follwed word is: ");
+					String followedWord = sc.next();
+					System.out.println(followedWord);
 					
-					window.add(folledWord);
-					window.remove();
+					putInN_Map(key, followedWord);
+					shiftByOneWindow(window, followedWord);
 				}
 			}
+			wrapAroundTheMap(window, firstKey);
 			sc.close();
 		}catch(IOException e){
 			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void wrapAroundTheMap(Queue<String> lastWindow, List<String> firstKey){
+		for(int i=0; i<(N-1); i++){
+			String topFollowedWord = firstKey.get(i);
+			List<String> lastKey = getKey(lastWindow);
+			putInN_Map(lastKey, topFollowedWord);
+			System.out.print("Top Word (" + i + ") : " + topFollowedWord + " ");
+			shiftByOneWindow(lastWindow, topFollowedWord);
+		}
+	}
+	
+	private void shiftByOneWindow(Queue<String> window , String followedWord){
+		window.add(followedWord);
+		window.remove();
+	}
+	
+	private void putInN_Map(List<String> key, String follwedWord){
+		if(N_Map.containsKey(key)){
+			List<String> value = N_Map.get(key);
+			value.add(follwedWord);
+			N_Map.put(key, value);
+		}else{
+			List<String> newValue = new ArrayList<>();
+			newValue.add(follwedWord);
+			N_Map.put(key, newValue);
 		}
 	}
 	
@@ -90,10 +107,8 @@ public class N_Grams {
 	}
 	
 	private void printN_map(){
-		HashMap<List<String>, List<String>> n_map = (HashMap<List<String>, List<String>>)N_Map;
-		
-		for(List<String> key: n_map.keySet()){
-			System.out.println(key + " : " + n_map.get(key));
+		for(List<String> key: N_Map.keySet()){
+			System.out.println(key + " : " + N_Map.get(key));
 		}
 	}
 }
