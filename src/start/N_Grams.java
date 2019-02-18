@@ -32,10 +32,20 @@ public class N_Grams {
 		System.out.print("Value of N?: ");
 		Scanner userInputScanner = new Scanner(System.in);
 		N = userInputScanner.nextInt();
-		userInputScanner.close();
 		biuldN_Map();
 		System.out.println("Map is\n");
 		printN_map();
+		System.out.print("# of random words to generate (0 to quit)? : ");
+		int numOfWord = userInputScanner.nextInt();
+		if(numOfWord != 0){
+			generateText(numOfWord);
+		}
+		System.out.println("\nHave a good day");
+		userInputScanner.close();
+	}
+	
+	private void generateText(int numOfWord){
+		System.out.println("Generating Text .. ");
 	}
 	
 	private void biuldN_Map(){
