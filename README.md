@@ -6,6 +6,8 @@ to learn about Data Structures.
 
 Course material from CS 106B Website
 
+#### Problem Link - http://web.stanford.edu/class/archive/cs/cs106b/cs106b.1172/assn/serafini.html
+
 ### Data Structures Used
 1. Set
 2. Queue

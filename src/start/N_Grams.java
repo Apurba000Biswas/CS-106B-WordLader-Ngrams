@@ -63,7 +63,6 @@ public class N_Grams {
 		sbText.append("...");
 		System.out.println(sbText);
 	}
-	
 	private int buildText(StringBuilder sbText , String word, int textLength){
 		sbText.append(" ");
 		sbText.append(word);
@@ -71,7 +70,6 @@ public class N_Grams {
 		textLength ++;
 		return textLength;
 	}
-	
 	private Queue<String> buildWindow(List<String> key){
 		Queue<String> window = new LinkedList<String>();
 		for(String word: key){
@@ -79,7 +77,6 @@ public class N_Grams {
 		}
 		return window;
 	}
-	
 	private String getPossibleWord(List<String> key){
 		Random rand = new Random();
 		List<String> valueList = N_Map.get(key);
@@ -93,6 +90,8 @@ public class N_Grams {
 		List<String> key = (List<String>)nMapKeys[new Random().nextInt(nMapKeys.length)];
 		return key;
 	}
+	
+	
 	
 	
 	
@@ -123,7 +122,6 @@ public class N_Grams {
 			System.out.println(e.getMessage());
 		}
 	}
-	
 	private void wrapAroundTheMap(Queue<String> lastWindow, List<String> firstKey){
 		for(int i=0; i<(N-1); i++){
 			String topFollowedWord = firstKey.get(i);
@@ -132,12 +130,10 @@ public class N_Grams {
 			shiftByOneWindow(lastWindow, topFollowedWord);
 		}
 	}
-	
 	private void shiftByOneWindow(Queue<String> window , String followedWord){
 		window.add(followedWord);
 		window.remove();
 	}
-	
 	private void putInN_Map(List<String> key, String follwedWord){
 		if(N_Map.containsKey(key)){
 			List<String> value = N_Map.get(key);
@@ -149,7 +145,6 @@ public class N_Grams {
 			N_Map.put(key, newValue);
 		}
 	}
-	
 	private List<String> getKey(Queue<String> window){
 		Queue<String> copiedWindow = new LinkedList<>();
 		copiedWindow.addAll(window);
@@ -159,7 +154,6 @@ public class N_Grams {
 		}
 		return key;
 	}
-	
 	private void printN_map(){
 		for(List<String> key: N_Map.keySet()){
 			System.out.println(key + " : " + N_Map.get(key));
